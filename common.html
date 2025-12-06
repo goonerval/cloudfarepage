@@ -107,12 +107,50 @@ button:hover{transform:scale(1.08);background:#33cfff;}
 </div>
 
 <script>
+// SEARCH FILTER
 document.getElementById("search").addEventListener("input", function(){
-  const v=this.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(c=>c.style.display=c.dataset.name.includes(v)?"block":"none");
+  const v = this.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c =>
+    c.style.display = c.dataset.name.includes(v) ? "block" : "none"
+  );
 });
-function openGame(url){
-  window.open("about:blank").location.href = url;
+
+// GAME LAUNCHER: about:blank + iframe (WORKING VERSION)
+function openGame(url) {
+  const win = window.open("about:blank", "_blank");
+
+  if (!win) {
+    alert("Popup blocked! Enable popups to launch games.");
+    return;
+  }
+
+  win.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Loading...</title>
+      <style>
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          background: #000;
+          overflow: hidden;
+        }
+        iframe {
+          border: none;
+          width: 100vw;
+          height: 100vh;
+        }
+      </style>
+    </head>
+    <body>
+      <iframe src="${url}"></iframe>
+    </body>
+    </html>
+  `);
+
+  win.document.close();
 }
 </script>
 
